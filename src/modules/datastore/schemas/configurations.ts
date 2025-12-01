@@ -1,7 +1,7 @@
 /**
  * Importing npm packages
  */
-import { bigserial, boolean, pgEnum, pgTable, timestamp, unique, varchar } from 'drizzle-orm/pg-core';
+import { bigint, bigserial, boolean, pgEnum, pgTable, timestamp, unique, varchar } from 'drizzle-orm/pg-core';
 
 /**
  * Importing user defined packages
@@ -15,7 +15,7 @@ import { bigserial, boolean, pgEnum, pgTable, timestamp, unique, varchar } from 
  * Declaring the constants
  */
 
-export const notificationChannel = pgEnum('notification_channel', ['EMAIL', 'SMS']);
+export const notificationChannel = pgEnum('notification_channel', ['EMAIL', 'SMS', 'PUSH']);
 
 export const senderProfiles = pgTable(
   'sender_profiles',
@@ -24,7 +24,7 @@ export const senderProfiles = pgTable(
     key: varchar('key', { length: 255 }).notNull(),
     channel: notificationChannel('channel').notNull(),
     identifier: varchar('identifier', { length: 500 }).notNull(),
-    is_default: boolean('is_default').notNull().default(false),
+    isDefault: boolean('is_default').notNull().default(false),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
   },
@@ -33,12 +33,11 @@ export const senderProfiles = pgTable(
 
 export const serviceConfigurations = pgTable('service_configurations', {
   id: bigserial('id', { mode: 'bigint' }).primaryKey(),
-  service_name: varchar('service_name', { length: 255 }).notNull().unique(),
+  serviceName: varchar('service_name', { length: 255 }).notNull().unique(),
 
-  default_sms_sender_profile_id: bigserial('default_sms_sender_profile_id', { mode: 'bigint' }).references(() => senderProfiles.id),
-  default_email_sender_profile_id: bigserial('default_email_sender_profile_id', { mode: 'bigint' }).references(() => senderProfiles.id),
-  default_push_sender_profile_id: bigserial('default_push_sender_profile_id', { mode: 'bigint' }).references(() => senderProfiles.id),
-
+  defaultSmsSenderProfileId: bigint('default_sms_sender_profile_id', { mode: 'bigint' }).references(() => senderProfiles.id),
+  defaultEmailSenderProfileId: bigint('default_email_sender_profile_id', { mode: 'bigint' }).references(() => senderProfiles.id),
+  defaultPushSenderProfileId: bigint('default_push_sender_profile_id', { mode: 'bigint' }).references(() => senderProfiles.id),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });

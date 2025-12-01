@@ -1,7 +1,7 @@
 /**
  * Importing npm packages
  */
-import { bigserial, boolean, pgEnum, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { bigint, bigserial, boolean, pgEnum, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 
 /**
  * Importing user defined packages
@@ -23,14 +23,14 @@ export const templateGroups = pgTable('template_groups', {
   template_key: varchar('template_key', { length: 255 }).notNull().unique(),
   description: varchar('description', { length: 500 }),
   priority: priority('priority').notNull().default('MEDIUM'),
-  is_active: boolean('is_active').notNull().default(true),
+  isActive: boolean('is_active').notNull().default(true),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
 export const templateVariants = pgTable('template_variants', {
   id: bigserial('id', { mode: 'bigint' }).primaryKey(),
-  template_group_id: bigserial('template_group_id', { mode: 'bigint' })
+  templateGroupId: bigint('template_group_id', { mode: 'bigint' })
     .notNull()
     .references(() => templateGroups.id, { onDelete: 'cascade' }),
 
@@ -39,7 +39,7 @@ export const templateVariants = pgTable('template_variants', {
 
   subject: varchar('subject', { length: 255 }),
   body: varchar('body', { length: 5000 }).notNull(),
-  is_active: boolean('is_active').notNull().default(true),
+  isActive: boolean('is_active').notNull().default(true),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
