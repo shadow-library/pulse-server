@@ -22,6 +22,7 @@ declare module '@shadow-library/fastify' {
  */
 
 export const CUSTOM_DATA_TRANSFORMERS: CustomTransformers = {
+  /** converts a number in YYYYMMDD format to a string in DD-MM-YYYY format */
   'date:dmy': (value: number): string => {
     const day = value % 100;
     const month = Math.floor((value % 10_000) / 100);

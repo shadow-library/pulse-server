@@ -40,7 +40,7 @@ export class DashboardController {
         fromDate: 2024_12_27,
         toDate: 2024_12_31,
         stats: [
-          { date: 2025_12_27, total: 100, succeeded: 80, failed: 15, pending: 5 },
+          { date: 2024_12_27, total: 100, succeeded: 80, failed: 15, pending: 5 },
           { date: 2024_12_28, total: 90, succeeded: 70, failed: 15, pending: 5 },
           { date: 2024_12_29, total: 95, succeeded: 75, failed: 15, pending: 5 },
           { date: 2024_12_30, total: 85, succeeded: 65, failed: 15, pending: 5 },
