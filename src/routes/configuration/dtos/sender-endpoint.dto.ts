@@ -33,12 +33,18 @@ export class CreateSenderEndpointBody {
 }
 
 @Schema()
-export class SenderEndpointResponse extends CreateSenderEndpointBody {
+export class SenderEndpointResponse extends OmitType(CreateSenderEndpointBody, ['weight', 'isActive'] as const) {
   @Field(() => String)
   id: bigint;
 
   @Field(() => String)
   senderProfileId: bigint;
+
+  @Field()
+  weight: number;
+
+  @Field()
+  isActive: boolean;
 
   @Field(() => String, { format: 'date-time' })
   createdAt: Date;

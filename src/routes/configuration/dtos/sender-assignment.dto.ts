@@ -1,7 +1,7 @@
 /**
  * Importing npm packages
  */
-import { Field, PickType, Schema } from '@shadow-library/class-schema';
+import { Field, OmitType, PickType, Schema } from '@shadow-library/class-schema';
 import { Transform } from '@shadow-library/fastify';
 import { Paginated, PaginationQuery } from '@shadow-library/modules/http-core';
 
@@ -33,7 +33,13 @@ export class CreateSenderAssignmentBody {
 }
 
 @Schema()
-export class SenderAssignmentResponse extends CreateSenderAssignmentBody {
+export class SenderAssignmentResponse extends OmitType(CreateSenderAssignmentBody, ['region', 'serviceName'] as const) {
+  @Field()
+  region: string;
+
+  @Field()
+  serviceName: string;
+
   @Field(() => String, { format: 'date-time' })
   createdAt: Date;
 

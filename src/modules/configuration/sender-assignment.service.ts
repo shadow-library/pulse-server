@@ -59,7 +59,7 @@ export class SenderAssignmentService {
       .returning()
       .catch(err => this.datastoreService.translateError(err));
     assert(assignment, 'Failed to create sender assignment');
-    this.logger.info(`Created sender assignment for service: '${data.serviceName}', messageType: '${data.messageType}', region: '${data.region}'`, { assignment });
+    this.logger.info('Created sender assignment', { assignment });
     return assignment;
   }
 
@@ -98,11 +98,9 @@ export class SenderAssignmentService {
     region: string,
     updatedSenderProfileId: bigint,
   ): Promise<Configuration.SenderProfileAssignment> {
-    if (updatedSenderProfileId) {
-      const profile = await this.db.query.senderProfiles.findFirst({ where: eq(schema.senderProfiles.id, updatedSenderProfileId) });
-      if (!profile) throw new ServerError(AppErrorCode.SND_PRF_001);
-      if (!profile.isActive) throw new ServerError(AppErrorCode.SND_ASGN_003);
-    }
+    const profile = await this.db.query.senderProfiles.findFirst({ where: eq(schema.senderProfiles.id, updatedSenderProfileId) });
+    if (!profile) throw new ServerError(AppErrorCode.SND_PRF_001);
+    if (!profile.isActive) throw new ServerError(AppErrorCode.SND_ASGN_003);
 
     const [result] = await this.db
       .update(schema.senderProfileAssignments)

@@ -23,13 +23,16 @@ export class CreateSenderProfileBody {
   displayName?: string | null;
 
   @Field({ optional: true })
-  isActive: boolean;
+  isActive?: boolean;
 }
 
 @Schema()
-export class SenderProfileResponse extends CreateSenderProfileBody {
+export class SenderProfileResponse extends OmitType(CreateSenderProfileBody, ['isActive'] as const) {
   @Field(() => String)
   id: bigint;
+
+  @Field()
+  isActive: boolean;
 
   @Field(() => String, { format: 'date-time' })
   createdAt: Date;

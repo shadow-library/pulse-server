@@ -67,6 +67,7 @@ export const senderProfileAssignments = pgTable(
     messageType: messageTypes('message_type').notNull(),
     region: varchar('region', { length: 2 }).notNull().default('ZZ'),
     serviceName: varchar('service_name', { length: 100 }).notNull().default('DEFAULT'),
+
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
   },
