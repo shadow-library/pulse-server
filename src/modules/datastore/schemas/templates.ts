@@ -86,3 +86,7 @@ export const templateGroupRelations = relations(templateGroups, ({ many }) => ({
 export const templateVariantRelations = relations(templateVariants, ({ one }) => ({
   group: one(templateGroups, { fields: [templateVariants.templateGroupId], references: [templateGroups.id] }),
 }));
+
+export const templateChannelSettingRelations = relations(templateChannelSettings, ({ one }) => ({
+  group: one(templateGroups, { fields: [templateChannelSettings.templateGroupId], references: [templateGroups.id] }),
+}));

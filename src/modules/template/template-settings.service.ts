@@ -42,7 +42,7 @@ export class TemplateSettingsService {
       where: and(eq(schema.templateChannelSettings.templateGroupId, templateGroupId), eq(schema.templateChannelSettings.channel, channel)),
     });
 
-    if (!channelSettings) throw new ServerError(AppErrorCode.TPL_GRP_001);
+    if (!channelSettings) throw new ServerError(AppErrorCode.TPL_CHN_001);
     return channelSettings;
   }
 
