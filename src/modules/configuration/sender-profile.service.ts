@@ -46,7 +46,7 @@ export class SenderProfileService {
   async createSenderProfile(data: CreateSenderProfile): Promise<Configuration.SenderProfile> {
     const senderProfile = await this.db
       .transaction(async tx => {
-        const [senderProfile] = await this.db.insert(schema.senderProfiles).values(data).returning();
+        const [senderProfile] = await tx.insert(schema.senderProfiles).values(data).returning();
         assert(senderProfile, 'Failed to create sender profile');
 
         const routingRule = await tx.query.senderRoutingRules.findFirst({

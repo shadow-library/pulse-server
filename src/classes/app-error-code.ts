@@ -50,8 +50,8 @@ export class AppErrorCode extends ServerErrorCode {
   static readonly SND_PRF_001 = new AppErrorCode('SND_PRF_001', ErrorType.NOT_FOUND, 'Sender profile not found');
   /** Sender profile with the given key already exists */
   static readonly SND_PRF_002 = new AppErrorCode('SND_PRF_002', ErrorType.CONFLICT, 'Sender profile with the given key already exists');
-  /** Cannot delete sender profile with active assignments */
-  static readonly SND_PRF_003 = new AppErrorCode('SND_PRF_003', ErrorType.CONFLICT, 'Cannot delete sender profile with active assignments');
+  /** Cannot delete sender profile with active routing rules */
+  static readonly SND_PRF_003 = new AppErrorCode('SND_PRF_003', ErrorType.CONFLICT, 'Cannot delete sender profile with active routing rules');
 
   /*!
    * Sender Endpoint Errors

@@ -53,14 +53,14 @@ export class SenderRoutingRuleService {
     if (!profile) throw new ServerError(AppErrorCode.SND_PRF_001);
     if (!profile.isActive) throw new ServerError(AppErrorCode.SND_RTR_003);
 
-    const [assignment] = await this.db
+    const [routingRule] = await this.db
       .insert(schema.senderRoutingRules)
       .values(data)
       .returning()
       .catch(err => this.datastoreService.translateError(err));
-    assert(assignment, 'Failed to create sender assignment');
-    this.logger.info('Created sender assignment', { assignment });
-    return assignment;
+    assert(routingRule, 'Failed to create sender routing rule');
+    this.logger.info('Created sender routing rule', { routingRule });
+    return routingRule;
   }
 
   async listSenderRoutingRules(filter: ListSenderRoutingRulesQuery = {}): Promise<OffsetPaginationResult<Configuration.SenderRoutingRule>> {
@@ -80,12 +80,12 @@ export class SenderRoutingRuleService {
   }
 
   async getSenderRoutingRule(serviceName: string, messageType: Template.MessageType, region: string): Promise<SenderRoutingRuleDetails | null> {
-    const assignment = await this.db.query.senderRoutingRules.findFirst({
+    const routingRule = await this.db.query.senderRoutingRules.findFirst({
       where: and(eq(schema.senderRoutingRules.service, serviceName), eq(schema.senderRoutingRules.messageType, messageType), eq(schema.senderRoutingRules.region, region)),
       with: { profile: true },
     });
 
-    return assignment ?? null;
+    return routingRule ?? null;
   }
 
   async updateSenderRoutingRule(service: string, messageType: Template.MessageType, region: string, updatedSenderProfileId: bigint): Promise<Configuration.SenderRoutingRule> {
