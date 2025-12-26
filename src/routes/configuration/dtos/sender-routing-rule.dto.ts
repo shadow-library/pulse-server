@@ -1,7 +1,7 @@
 /**
  * Importing npm packages
  */
-import { Field, OmitType, PickType, Schema } from '@shadow-library/class-schema';
+import { Field, PickType, Schema } from '@shadow-library/class-schema';
 import { Transform } from '@shadow-library/fastify';
 import { Paginated, PaginationQuery } from '@shadow-library/modules/http-core';
 
