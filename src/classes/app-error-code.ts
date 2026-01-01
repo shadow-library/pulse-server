@@ -41,6 +41,8 @@ export class AppErrorCode extends ServerErrorCode {
   static readonly TPL_VRT_001 = new AppErrorCode('TPL_VRT_001', ErrorType.NOT_FOUND, 'Template variant not found');
   /** Template variant with the given channel and locale already exists for the template group */
   static readonly TPL_VRT_002 = new AppErrorCode('TPL_VRT_002', ErrorType.CONFLICT, 'Template variant with the given channel and locale already exists for the template group');
+  /** Active template variant not found */
+  static readonly TPL_VRT_003 = new AppErrorCode('TPL_VRT_003', ErrorType.CONFLICT, 'Active template variant not found');
 
   /*!
    * Sender Profile Errors
@@ -72,4 +74,18 @@ export class AppErrorCode extends ServerErrorCode {
   static readonly SND_RTR_002 = new AppErrorCode('SND_RTR_002', ErrorType.CONFLICT, 'Sender routing rule already exists for this combination');
   /** Sender profile must be active to create routing rule */
   static readonly SND_RTR_003 = new AppErrorCode('SND_RTR_003', ErrorType.CONFLICT, 'Sender profile must be active to create routing rule');
+  /** Cannot delete default routing rule */
+  static readonly SND_RTR_004 = new AppErrorCode('SND_RTR_004', ErrorType.CONFLICT, 'Cannot delete default routing rule');
+
+  /*!
+   * Notification Errors
+   */
+  /** No valid recipients provided for SMS notification */
+  static readonly N001 = new AppErrorCode('N001', ErrorType.CLIENT_ERROR, 'No valid recipients provided for SMS notification');
+  /** No valid recipients provided for Email notification */
+  static readonly N002 = new AppErrorCode('N002', ErrorType.CLIENT_ERROR, 'No valid recipients provided for Email notification');
+  /** No valid recipients provided for Push notification */
+  static readonly N003 = new AppErrorCode('N003', ErrorType.CLIENT_ERROR, 'No valid recipients provided for Push notification');
+  /** Notification template not found for the given key and locale */
+  static readonly N004 = new AppErrorCode('N004', ErrorType.CLIENT_ERROR, 'Notification template not found for the given key and locale');
 }
