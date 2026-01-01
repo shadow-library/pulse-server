@@ -81,11 +81,11 @@ export class AppErrorCode extends ServerErrorCode {
    * Notification Errors
    */
   /** No valid recipients provided for SMS notification */
-  static readonly N001 = new AppErrorCode('N001', ErrorType.CLIENT_ERROR, 'No valid recipients provided for SMS notification');
+  static readonly NTF_001 = new AppErrorCode('NTF_001', ErrorType.CLIENT_ERROR, 'No valid recipients provided for SMS notification');
   /** No valid recipients provided for Email notification */
-  static readonly N002 = new AppErrorCode('N002', ErrorType.CLIENT_ERROR, 'No valid recipients provided for Email notification');
+  static readonly NTF_002 = new AppErrorCode('NTF_002', ErrorType.CLIENT_ERROR, 'No valid recipients provided for Email notification');
   /** No valid recipients provided for Push notification */
-  static readonly N003 = new AppErrorCode('N003', ErrorType.CLIENT_ERROR, 'No valid recipients provided for Push notification');
+  static readonly NTF_003 = new AppErrorCode('NTF_003', ErrorType.CLIENT_ERROR, 'No valid recipients provided for Push notification');
   /** Notification template not found for the given key and locale */
-  static readonly N004 = new AppErrorCode('N004', ErrorType.CLIENT_ERROR, 'Notification template not found for the given key and locale');
+  static readonly NTF_004 = new AppErrorCode('NTF_004', ErrorType.CLIENT_ERROR, 'Notification template not found for the given key and locale');
 }
