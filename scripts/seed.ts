@@ -19,6 +19,7 @@ import * as seedData from './seed-data';
 /**
  * Declaring the constants
  */
+const logger = Logger.getLogger('Scripts', 'Seeder');
 const orderedTables: (keyof typeof schema)[] = [
   'templateGroups',
   'templateVariants',
@@ -36,33 +37,30 @@ function getTableName(table: PgTableWithColumns<any>): string {
 }
 
 export async function seed(db?: BunSQLDatabase<typeof schema>): Promise<void> {
-  const logger = Logger.getLogger('Scripts', 'Seeder');
-
   if (!db) {
     const url = process.env.PRIMARY_DATABASE_URL ?? 'postgresql://admin:password@localhost/shadow_pulse';
     db = drizzle(url, { schema });
-    logger.info(`Connected to database '${url.split('/').pop()}' for seeding`);
+    logger.debug(`Connected to database '${url.split('/').pop()}' for seeding`);
   }
 
-  try {
-    const tableList = orderedTables.map(table => getTableName(schema[table] as PgTableWithColumns<any>)).join(', ');
-    await db.execute(`TRUNCATE ${tableList} RESTART IDENTITY CASCADE`);
-    logger.info('Truncated existing data from all tables');
+  const tableList = orderedTables.map(table => getTableName(schema[table] as PgTableWithColumns<any>)).join(', ');
+  await db.execute(`TRUNCATE ${tableList} RESTART IDENTITY CASCADE`);
+  logger.debug('Truncated existing data from all tables');
 
-    for (const tableName of orderedTables) {
-      const data = (seedData as Record<string, unknown>)[tableName];
-      if (!Array.isArray(data)) {
-        logger.warn(`Seed data for '${tableName}' not found, Skipping`);
-        continue;
-      }
-
-      const table = schema[tableName] as PgTableWithColumns<any>;
-      await db.insert(table).values(data);
-      logger.info(`Inserted ${data.length} records into table '${tableName}'`);
+  for (const tableName of orderedTables) {
+    const data = (seedData as Record<string, unknown>)[tableName];
+    if (!Array.isArray(data)) {
+      logger.warn(`Seed data for '${tableName}' not found, Skipping`);
+      continue;
     }
 
-    /** Reset the sequences */
-    await db.execute(`
+    const table = schema[tableName] as PgTableWithColumns<any>;
+    await db.insert(table).values(data);
+    logger.debug(`Inserted ${data.length} records into table '${tableName}'`);
+  }
+
+  /** Reset the sequences */
+  await db.execute(`
       DO $$
       DECLARE r record;
       BEGIN
@@ -88,15 +86,12 @@ export async function seed(db?: BunSQLDatabase<typeof schema>): Promise<void> {
         END LOOP;
       END $$;
     `);
-    logger.info('Sequences reset successfully');
+  logger.debug('Sequences reset successfully');
 
-    logger.info('Database seeding completed successfully');
-  } catch (error) {
-    logger.error('Error during database seeding:', error);
-  }
+  logger.info('Database seeding completed successfully');
 }
 
 if (import.meta.path === Bun.main) {
   Logger.attachTransport('console:pretty');
-  await seed();
+  await seed().catch(err => logger.error('Seeding failed', err));
 }

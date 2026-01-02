@@ -10,7 +10,7 @@
     "type-check": "bun run tsc",
     "build": "bun run scripts/build.ts",
     "dev": "bun run --watch src/main.ts",
-    "db:template:create": "bun run scripts/create-template-db.ts",
+    "db:create-template": "bun run scripts/create-template-db.ts",
     "db:seed": "bun run scripts/seed.ts"
   },
   "repository": {
