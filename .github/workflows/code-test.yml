@@ -38,6 +38,6 @@ jobs:
         run: bun run build
 
       - name: Test the code
-        run: bun test --concurrency 3
+        run: bun test --max-concurrency 3
         env:
           PRIMARY_DATABASE_HOST: postgres
