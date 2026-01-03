@@ -48,3 +48,12 @@ jobs:
 
       - name: Test the code
         run: bun test
+        env:
+          LOG_LEVEL: http
+
+      - name: Upload test logs
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-logs
+          path: ./logs/*.log
