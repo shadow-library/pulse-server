@@ -41,7 +41,11 @@ jobs:
         run: bun run build
 
       - name: Prepare test environment
-        run: bun run db:create-template
+        run: |
+          bun run db:create-template
+          CID='${{ job.services.postgres.id }}'
+          docker exec "$CID" psql -U admin -d password -c "ALTER SYSTEM SET max_connections = '200';"
+          docker restart "$CID"
 
       - name: Test the code
         run: bun test
