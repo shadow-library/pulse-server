@@ -67,7 +67,12 @@ export class TemplateVariantService {
   async getTemplateVariant(templateGroupId: bigint, channel: Notification.Channel, locale: string): Promise<LinkedTemplateVariant | null> {
     const templateGroup = await this.db.query.templateGroups.findFirst({
       where: eq(schema.templateGroups.id, templateGroupId),
-      with: { variants: { where: and(eq(schema.templateVariants.channel, channel), eq(schema.templateVariants.locale, locale)) } },
+      with: {
+        variants: {
+          where: and(eq(schema.templateVariants.channel, channel), eq(schema.templateVariants.locale, locale)),
+          limit: 1,
+        },
+      },
     });
 
     const variant = templateGroup?.variants[0];

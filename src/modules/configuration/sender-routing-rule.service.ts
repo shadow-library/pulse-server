@@ -34,10 +34,6 @@ export type CreateRoutingRule = Omit<InferInsertModel<typeof schema.senderRoutin
 
 export type UpdateRoutingRule = Partial<Pick<CreateRoutingRule, 'senderProfileId'>>;
 
-export interface ResolvedRoutingRule extends Configuration.SenderRoutingRule {
-  profile: Configuration.SenderProfile;
-}
-
 /**
  * Declaring the constants
  */
@@ -99,7 +95,7 @@ export class SenderRoutingRuleService {
     return routingRule ?? null;
   }
 
-  async resolveSenderRoutingRule(service?: string, region?: string, messageType?: Template.MessageType): Promise<ResolvedRoutingRule> {
+  async resolveSenderRoutingRule(service?: string, region?: string, messageType?: Template.MessageType): Promise<SenderRoutingRuleDetails> {
     const whereConditions = [];
 
     if (service && region && messageType) {
