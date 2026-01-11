@@ -180,7 +180,6 @@ export class NotificationService {
       Object.assign(jobLogData, { senderEndpointId: senderEndpoint.id });
       this.logger.debug(`Resolved sender endpoint for notification job - ${notificationJob.id}`, jobLogData);
 
-      /** @TODO add logic to send the notification */
       let result: NotificationOpResult;
       if (notificationJob.channel === 'SMS') result = await this.notificationProviderService.sendSMS(notificationJob, senderEndpoint, templateVariant);
       else if (notificationJob.channel === 'EMAIL') result = await this.notificationProviderService.sendEmail(notificationJob, senderEndpoint, templateVariant);
@@ -194,7 +193,7 @@ export class NotificationService {
           status,
           attempt: sql`${schema.notificationJobs.attempt} + 1`,
           lastAttemptedAt: new Date(),
-          nextAttemptAt: result.success ? null : this.getNextAttemptAt(templateGroup.messageType, notificationJob.priority, notificationJob.attempt),
+          nextAttemptAt: result.success ? null : this.getNextAttemptAt(templateGroup.messageType, notificationJob.priority, notificationJob.attempt + 1),
         })
         .where(eq(schema.notificationJobs.id, notificationJob.id))
         .returning({ id: schema.notificationJobs.id, status: schema.notificationJobs.status });
