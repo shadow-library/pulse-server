@@ -9,7 +9,7 @@ import { ErrorResponseDto, ServerError, Transform } from '@shadow-library/fastif
  */
 import { type Notification } from '@modules/datastore';
 import { ChannelNotificationStatus, NotificationStatus } from '@modules/notification';
-import { NotificationChannel } from '@server/routes/common/enum.dto';
+import { NotificationChannel } from '@server/routes/common';
 
 /**
  * Defining types

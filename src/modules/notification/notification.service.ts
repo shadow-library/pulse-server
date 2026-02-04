@@ -79,6 +79,9 @@ export type NotificationMessage = Notification.Message & {
   channel: Notification.Channel;
   recipient: string;
   locale: string;
+  payload?: unknown;
+  templateKey: string;
+  messageType: Template.MessageType;
 };
 
 /**
@@ -284,6 +287,7 @@ export class NotificationService {
       .select()
       .from(schema.notificationMessages)
       .innerJoin(schema.notificationJobs, eq(schema.notificationMessages.notificationJobId, schema.notificationJobs.id))
+      .innerJoin(schema.templateGroups, eq(schema.notificationJobs.templateGroupId, schema.templateGroups.id))
       .where(where);
 
     const [countResult, rows] = await Promise.all([
@@ -296,7 +300,11 @@ export class NotificationService {
     ]);
 
     const total = Number(countResult[0]?.count ?? 0);
-    const items = rows.map(row => ({ ...row.notification_messages, ...utils.object.pickKeys(row.notification_jobs, ['channel', 'recipient', 'locale']) }));
+    const items = rows.map(row => ({
+      ...row.notification_messages,
+      ...utils.object.pickKeys(row.notification_jobs, ['channel', 'recipient', 'locale', 'payload']),
+      ...utils.object.pickKeys(row.template_groups, ['templateKey', 'messageType']),
+    }));
     return utils.pagination.createResult(query, items, total);
   }
 }

@@ -7,8 +7,8 @@ import { Paginated, PaginationQuery } from '@shadow-library/modules/http-core';
 /**
  * Importing user defined packages
  */
-import { type Notification } from '@modules/datastore';
-import { NotificationChannel, SortByCreatedAt } from '@server/routes/common';
+import { type Notification, type Template } from '@modules/datastore';
+import { MessageType, NotificationChannel, SortByCreatedAt } from '@server/routes/common';
 
 /**
  * Defining types
@@ -46,6 +46,15 @@ export class NotificationMessageResponse {
 
   @Field()
   renderedBody: string;
+
+  @Field(() => Object, { optional: true, additionalProperties: true })
+  payload?: unknown;
+
+  @Field()
+  templateKey: string;
+
+  @Field(() => MessageType)
+  messageType: Template.MessageType;
 
   @Field(() => String, { format: 'date-time' })
   createdAt: Date;
