@@ -164,7 +164,7 @@ describe('Template Variant', () => {
     });
 
     it('should create template channel settings when first variant is added for a channel', async () => {
-      const db = testEnv.getPrimaryDatabase();
+      const db = testEnv.getPostgresClient();
       const body = {
         channel: 'EMAIL',
         locale: 'en-US',
@@ -186,7 +186,7 @@ describe('Template Variant', () => {
     });
 
     it('should not add or update channel settings when second variant is added for same channel', async () => {
-      const db = testEnv.getPrimaryDatabase();
+      const db = testEnv.getPostgresClient();
       const body = {
         channel: 'SMS',
         locale: 'fr-FR',

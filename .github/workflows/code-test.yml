@@ -50,7 +50,8 @@ jobs:
         run: bun test
         env:
           LOG_LEVEL: http
-          DB_PRIMARY_MAX_CONNECTIONS: 1
+          DATABASE_POSTGRES_MAX_CONNECTIONS: 1
+          DATABASE_POSTGRES_LAZY_CONNECTION: true
 
       - name: Upload test logs
         if: failure()

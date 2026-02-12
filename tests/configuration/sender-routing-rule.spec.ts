@@ -43,7 +43,7 @@ describe('Sender Routing Rule', () => {
     });
 
     it('should create a routing rule with only required senderProfileId', async () => {
-      const db = testEnv.getPrimaryDatabase();
+      const db = testEnv.getPostgresClient();
       await db.delete(db._.fullSchema.senderRoutingRules);
 
       const body = { senderProfileId: '1' };
