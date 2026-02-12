@@ -21,11 +21,9 @@ import { seed } from './seed';
  * Declaring the constants
  */
 const logger = Logger.getLogger('Scripts', 'TemplateDBCreator');
-const host = process.env.POSTGRES_DATABASE_HOST ?? 'localhost';
-const user = process.env.POSTGRES_DATABASE_USER ?? 'admin';
-const password = process.env.POSTGRES_DATABASE_PASSWORD ?? 'password';
+const baseConnectionString = process.env.DATABASE_POSTGRES_URL ?? 'postgresql://postgres:postgres@localhost/shadow_pulse';
+const baseUrl = baseConnectionString.replace(/\/[^/]*$/, '');
 const templateDbName = process.env.POSTGRES_TEMPLATE_DB_NAME ?? 'shadow_pulse_template';
-const baseUrl = `postgresql://${user}:${password}@${host}`;
 
 export async function createDatabaseFromTemplate(dbName: string): Promise<string> {
   const sql = new SQL(baseUrl);

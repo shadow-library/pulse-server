@@ -15,7 +15,7 @@ import { TEST_REGEX, TestEnvironment } from '@tests/test-environment';
 /**
  * Declaring the constants
  */
-const testEnv = new TestEnvironment('shadow_pulse_sender_profile_test');
+const testEnv = new TestEnvironment('sender_profile_test');
 
 describe('Sender Profile', () => {
   testEnv.init();

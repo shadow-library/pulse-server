@@ -25,10 +25,7 @@ import { APP_NAME } from '@server/constants';
  * Declaring the constants
  */
 Logger.attachTransport('file:json');
-const host = process.env.POSTGRES_DATABASE_HOST ?? 'localhost';
-const user = process.env.POSTGRES_DATABASE_USER ?? 'admin';
-const password = process.env.POSTGRES_DATABASE_PASSWORD ?? 'password';
-const baseUrl = `postgresql://${user}:${password}@${host}`;
+const baseConnectionString = process.env.DATABASE_POSTGRES_URL ?? 'postgresql://postgres:postgres@localhost/shadow_pulse';
 
 export const TEST_REGEX = {
   id: /^\d+$/,
@@ -41,16 +38,17 @@ export class TestEnvironment {
 
   private readonly app = new ShadowApplication(AppModule);
 
-  constructor(private readonly databaseName: string) {}
+  constructor(private readonly databaseSuffix: string) {}
 
   init(): void {
-    TestEnvironment.logger.info(`Setting up test environment with database: '${this.databaseName}'`);
-    Config['cache'].set('database.postgres.url', `${baseUrl}/${this.databaseName}`);
+    const databaseName = `${baseConnectionString.split('/').pop()}_${this.databaseSuffix}`;
+    TestEnvironment.logger.info(`Setting up test environment with database: '${databaseName}'`);
+    Config['cache'].set('database.postgres.url', `${baseConnectionString}_${this.databaseSuffix}`);
 
     NotificationService.prototype['executeNotificationJob'] = () => Bun.sleep(10);
 
-    beforeEach(() => createDatabaseFromTemplate(this.databaseName));
-    afterEach(() => dropDatabase(this.databaseName));
+    beforeEach(() => createDatabaseFromTemplate(databaseName));
+    afterEach(() => dropDatabase(databaseName));
 
     beforeAll(() => this.app.init());
     afterAll(() => this.app.stop());
